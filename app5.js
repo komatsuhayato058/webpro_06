@@ -62,4 +62,58 @@ app.get("/janken", (req, res) => {
   res.render( 'janken', display );
 });
 
+app.get("/gatya", (req, res) => {
+  let win = Number(req.query.win || 0); // ウルトラレアを当てた数
+  let total = Number(req.query.total || 0); // 総プレイ回数
+
+  // ガチャ結果の計算
+  const num = Math.floor(Math.random() * 100 + 1);
+  let gatya = '';
+  if (num == 1) {
+    gatya = 'ウルトラレア';
+    win += 1;
+  } else if (1 < num && num <= 6) {
+    gatya = 'スーパーレア';
+  } else if (6 < num && num <= 31) {
+    gatya = 'レア';
+  } else {
+    gatya = 'ノーマル';
+  }
+
+  total += 1; // 総プレイ回数を増加
+
+  const display = {
+    number: num,
+    gatya: gatya,
+    win: win,
+    total: total
+  };
+
+  res.render('gatya', display);
+});
+
+app.get("/bmi", (req, res) => {
+  const weight = parseFloat(req.query.weight);
+  const height = parseFloat(req.query.height);
+  let bmi = null;
+  let result = '';
+
+  if (!weight || !height || weight <= 0 || height <= 0) {
+    result = "正しい体重と身長を入力してください。";
+  } else {
+    bmi = weight / ((height / 100) ** 2); // BMI計算
+    if (bmi < 18.5) {
+      result = "痩せすぎです。";
+    } else if (bmi < 25) {
+      result = "普通体型です。";
+    } else if (bmi < 30) {
+      result = "少し太り気味です。";
+    } else {
+      result = "肥満です。";
+    }
+  }
+
+  res.render("bmi", { weight, height, bmi: bmi ? bmi.toFixed(2) : null, result });
+});
+
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

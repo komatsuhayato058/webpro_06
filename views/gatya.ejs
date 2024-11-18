@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ガチャガチャ</title>
+</head>
+<body>
+    <p>抽選された数字: <strong><%= number %></strong></p>
+    <p>ガチャ結果: <strong><%= gatya %></strong></p>
+    <p>現在<%= total %>回中<%= win %>回ウルトラレアを引きました。</p>
+    <hr>
+    <form action="/gatya" method="get">
+        <input type="hidden" name="win" value="<%= win %>">
+        <input type="hidden" name="total" value="<%= total %>">
+        <input type="submit" value="もう一回ガチャを回す！">
+    </form>
+</body>
+</html>
